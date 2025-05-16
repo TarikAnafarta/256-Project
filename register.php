@@ -92,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $mail->isSMTP();
           $mail->Host       = 'asmtp.bilkent.edu.tr';                     
           $mail->SMTPAuth   = true;                                   
-          $mail->Username   =  'KENDI MAILINIZ';                                       
-          $mail->Password   =  'KENDI SIFRENIZ' ;                     
+          $mail->Username   =  'Kendi Username';                                       
+          $mail->Password   =  'Kendi Password' ;                     
           $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
           $mail->Port       = 587;  
           $mail->setFrom("KENDI MAILINIZ", "Market System");
