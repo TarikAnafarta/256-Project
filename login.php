@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($u && password_verify($pw, $u['password_hash'])) {
         // block unverified consumers
         if ($u['user_type'] === 'consumer' && $u['registration_status'] !== 'verified') {
-            $error = "Lütfen önce e-posta adresinizi doğrulayın.";
+            $error = "Please verify your email address first.";
         } else {
             $_SESSION['user_id']   = $u['user_id'];
             $_SESSION['user_type'] = $u['user_type'];
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
     } else {
-        $error = "E-posta veya şifre hatalı.";
+        $error = "Email or password is incorrect..";
     }
 }
 ?>
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Giriş Yap</title>
+  <title>Log in</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
   <div id="toast"></div>
   <div class="container">
-    <h2>Giriş Yap</h2>
+    <h2>Log in </h2>
 
     <?php if (!empty($error)): ?>
       <div class="error"><?= htmlspecialchars($error) ?></div>
@@ -119,18 +119,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST">
       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
-      <label for="email">E-posta</label>
+      <label for="email">E-mail</label>
       <input type="email" id="email" name="email"
              value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
 
-      <label for="password">Şifre</label>
+      <label for="password">Password</label>
       <input type="password" id="password" name="password" required>
 
-      <button type="submit" class="btn">Giriş Yap</button>
+      <button type="submit" class="btn">Log in</button>
     </form>
 
     <p class="text-center">
-      Hesabınız yok mu? <a href="register.php">Kayıt Ol</a>
+      Don't have an account? <a href="register.php">Sign up</a>
     </p>
   </div>
   <script>

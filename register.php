@@ -29,22 +29,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Geçerli bir e-posta girin.';
+        $errors[] = 'Please enter a valid email.';
     }
     if (strlen($password) < 6) {
-        $errors[] = 'Şifre en az 6 karakter olmalı.';
+        $errors[] = 'Password must be at least 6 characters.';
     }
     if ($full_name === '') {
-        $errors[] = 'Ad Soyad boş bırakılamaz.';
+        $errors[] = 'Name Surname cannot be left blank.';
     }
     if ($city === '') {
-        $errors[] = 'Lütfen şehir seçin veya girin.';
+        $errors[] = 'Please select or enter a city.';
     }
     if ($district === '') {
-        $errors[] = 'İlçe boş bırakılamaz.';
+        $errors[] = 'District cannot be left blank.';
     }
     if (!in_array($user_type, ['consumer','market'], true)) {
-        $errors[] = 'Lütfen kullanıcı türünü seçin.';
+        $errors[] = 'Please select your user type.';
     }
 
     // E-posta kontrolü
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
         $stmt->execute([$email]);
         if ($stmt->fetchColumn() > 0) {
-            $errors[] = 'Bu e-posta zaten kayıtlı.';
+            $errors[] = 'This email is already registered.';
         }
     }
 
@@ -92,11 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $mail->isSMTP();
           $mail->Host       = 'asmtp.bilkent.edu.tr';                     
           $mail->SMTPAuth   = true;                                   
-          $mail->Username   =  'Kendi Username';                                       
-          $mail->Password   =  'Kendi Password' ;                     
+          $mail->Username   =  'turkan.gazel@ug.bilkent.edu.tr';                                       
+          $mail->Password   =  'stg20242024' ;                     
           $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
           $mail->Port       = 587;  
-          $mail->setFrom("KENDI MAILINIZ", "Market System");
+          $mail->setFrom("turkan.gazel@ug.bilkent.edu.tr", "Market System");
           $mail->addAddress($email, $full_name);  
           $mail->isHTML(true);
           $mail->Subject = 'Verification Code';
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-        $success = 'Kayıt başarılı!'.($user_type==='consumer' ? ' Doğrulama kodu e-posta ile gönderildi.' : '');
+        $success = 'Registration successful!'.($user_type==='consumer' ? ' Verification code has been sent via email.' : '');
     }
 }
 ?>
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Kayıt Ol</title>
+  <title>Log in</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -184,12 +184,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
  <div id="toast"></div>
 <div class="container">
-  <h2>Kayıt Ol</h2>
+  <h2>Log in</h2>
 
   <?php if ($success): ?>
     <div class="message"><?= htmlspecialchars($success) ?></div>
     <?php if ($_POST['user_type']!=='market'): ?>
-      <p style="text-align:center;"><a href="verify.php">Doğrulama Sayfasına Git</a></p>
+      <p style="text-align:center;"><a href="verify.php">Go to Verification Page</a></p>
     <?php endif; ?>
   <?php endif; ?>
 
@@ -208,16 +208,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="email" id="email" name="email"
            value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
 
-    <label for="password">Şifre:</label>
+    <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
 
-    <label for="full_name">Ad Soyad:</label>
+    <label for="full_name">Name Surname:</label>
     <input type="text" id="full_name" name="full_name"
            value="<?= htmlspecialchars($_POST['full_name'] ?? '') ?>" required>
 
-    <label for="city">Şehir:</label>
+    <label for="city">City:</label>
     <select id="city" name="city" required>
-      <option value="">Seçiniz…</option>
+      <option value="">Select…</option>
       <option value="İstanbul" <?= (($_POST['city'] ?? '')==='İstanbul')?'selected':'' ?>>İstanbul</option>
       <option value="Ankara"    <?= (($_POST['city'] ?? '')==='Ankara')   ?'selected':'' ?>>Ankara</option>
       <option value="İzmir"     <?= (($_POST['city'] ?? '')==='İzmir')    ?'selected':'' ?>>İzmir</option>
@@ -227,27 +227,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </select>
 
     <div id="city_other_field">
-      <label for="city_other">Diğer Şehir:</label>
+      <label for="city_other">Other City:</label>
       <input type="text" id="city_other" name="city_other" 
              value="<?= htmlspecialchars($_POST['city_other'] ?? '') ?>">
     </div>
 
-    <label for="district">İlçe:</label>
+    <label for="district">District:</label>
     <input type="text" id="district" name="district"
            value="<?= htmlspecialchars($_POST['district'] ?? '') ?>" required>
 
-    <label for="user_type">Kullanıcı Türü:</label>
+    <label for="user_type">User Type:</label>
     <select id="user_type" name="user_type" required>
-      <option value="">Seçiniz…</option>
-      <option value="consumer" <?= (($_POST['user_type'] ?? '')==='consumer')?'selected':'' ?>>Tüketici</option>
+      <option value="">Select…</option>
+      <option value="consumer" <?= (($_POST['user_type'] ?? '')==='consumer')?'selected':'' ?>>Consumer</option>
       <option value="market"   <?= (($_POST['user_type'] ?? '')==='market')  ?'selected':'' ?>>Market</option>
     </select>
 
-    <button type="submit" class="btn">Kayıt Ol</button>
+    <button type="submit" class="btn">Log in</button>
   </form>
 
   <p style="text-align:center; margin-top:10px;">
-    Zaten kaydınız var mı? <a href="login.php">Giriş Yapın</a>
+   Are you already registered? <a href="login.php">Login</a>
   </p>
 </div>
 

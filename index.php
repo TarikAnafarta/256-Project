@@ -61,7 +61,7 @@ if ($_SESSION['user_type'] === 'consumer') {
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <title>Ana Sayfa</title>
+  <title>Main Page</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <style>
@@ -216,23 +216,23 @@ if ($_SESSION['user_type'] === 'consumer') {
 
   <div class="wrapper">
     <div class="nav">
-      <a href="logout.php" class="logout">Çıkış Yap</a>
+      <a href="logout.php" class="logout">Logout</a>
       <?php if ($_SESSION['user_type'] === 'consumer'): ?>
-        <a href="viewCart.php" class="cart">Sepete Git</a>
+        <a href="viewCart.php" class="cart">Go to Cart</a>
       <?php else: ?>
-        <a href="market_products.php">Market Yönetimi</a>
+        <a href="market_products.php">Market Management</a>
       <?php endif; ?>
-      <a href="updateProfile.php" class="profile">Profilimi Düzenle</a>
+      <a href="updateProfile.php" class="profile">Edit My Profile</a>
     </div>
 
     <?php if ($_SESSION['user_type'] === 'consumer'): ?>
       <form class="search" method="get">
-        <input name="q" placeholder="Ürün ara…" value="<?= htmlspecialchars($q) ?>">
-        <button type="submit">Ara</button>
+        <input name="q" placeholder="Search product…" value="<?= htmlspecialchars($q) ?>">
+        <button type="submit">Search</button>
       </form>
 
       <?php if (empty($products)): ?>
-        <p>Ürün bulunamadı.</p>
+        <p>Product not found.</p>
       <?php else: ?>
         <div class="grid">
           <?php foreach ($products as $p): ?>
@@ -269,7 +269,7 @@ if ($_SESSION['user_type'] === 'consumer') {
       <?php endif; ?>
 
     <?php else: ?>
-      <p>Hoş geldiniz, market yetkilisi! Ürünlerinizi yönetmek için üstteki düğmeye tıklayın.</p>
+      <p>Welcome, market manager! Click the button above to manage your products.</p>
     <?php endif; ?>
   </div>
 </body>

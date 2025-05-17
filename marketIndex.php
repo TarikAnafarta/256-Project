@@ -27,7 +27,7 @@ $products = $pdo->query($productsQuery)->fetchAll();
 </style>
 
     <meta charset="UTF-8">
-    <title>Market Sayfası</title>
+    <title>Market Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -140,22 +140,22 @@ $products = $pdo->query($productsQuery)->fetchAll();
 <body>
  <div id="toast"></div>
 <header>
-    <h1>Market Ürünleri</h1>
+    <h1>Market Products</h1>
 </header>
 
 <!-- Çıkış yap butonu -->
 <form method="POST" action="logout.php">
-    <button type="submit" class="logout-btn">Çıkış Yap</button>
+    <button type="submit" class="logout-btn">Log out</button>
 </form>
 
 <!-- Sepete Git butonu -->
 <form method="GET" action="viewCart.php">
-    <button type="submit" class="go-to-cart-btn">Sepete Git</button>
+    <button type="submit" class="go-to-cart-btn">Go to Cart</button>
 </form>
 
 <!-- Kullanıcı bilgilerini güncelle butonu -->
 <form method="GET" action="updateProfile.php">
-    <button type="submit" class="update-profile-btn">Kullanıcı Bilgilerini Güncelle</button>
+    <button type="submit" class="update-profile-btn">Update User Information</button>
 </form>
 
 <div class="container">
@@ -166,7 +166,7 @@ $products = $pdo->query($productsQuery)->fetchAll();
             <p>Fiyat: <?= $product['discounted_price'] ?>₺</p>
             <form method="POST" action="addToCart.php">
                 <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
-                <button type="submit" class="add-to-cart">Sepete Ekle</button>
+                <button type="submit" class="add-to-cart">Add to Cart</button>
             </form>
         </div>
     <?php endforeach; ?>

@@ -14,10 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $code  = trim($_POST['code']  ?? '');
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Geçerli bir e-posta girin.';
+        $errors[] = 'Please enter a valid email.';
     }
     if (!preg_match('/^\d{6}$/', $code)) {
-        $errors[] = '6 haneli kod girin.';
+        $errors[] = 'Enter the 6 digit code.';
     }
 
     if (empty($errors)) {
@@ -38,9 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  WHERE user_id = ?
             ");
             $upd->execute([$uid]);
-            $success = 'E-posta doğrulandı! Şimdi <a href="login.php">giriş yapabilirsiniz</a>.';
+            $success = 'Email verified! You can now <a href="login.php">log in</a>.';
         } else {
-            $errors[] = 'Kod eşleşmedi veya zaten doğrulanmış.';
+            $errors[] = 'The code did not match or has already been verified.';
         }
     }
 }
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>E-posta Doğrulama</title>
+  <title>Email Verification</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; }
     .container {
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
   <div class="container">
-    <h2>E-posta Doğrulama</h2>
+    <h2>Email Verification</h2>
 
     <?php if ($errors): ?>
       <div class="error">
@@ -84,20 +84,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <form method="POST">
         <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 
-        <label for="email">E-posta</label>
+        <label for="email">Email</label>
         <input type="email" id="email" name="email" required
                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 
-        <label for="code">6 Haneli Kod</label>
+        <label for="code">6 Digit Code</label>
         <input type="text" id="code" name="code" pattern="\d{6}" required
                value="<?= htmlspecialchars($_POST['code'] ?? '') ?>">
 
-        <button type="submit">Doğrula</button>
+        <button type="submit">Verify</button>
       </form>
     <?php endif; ?>
 
     <p style="text-align:center; margin-top:10px;">
-      <a href="login.php">← Giriş Sayfasına Dön</a>
+      <a href="login.php">← Return to Home Page</a>
     </p>
   </div>
 </body>

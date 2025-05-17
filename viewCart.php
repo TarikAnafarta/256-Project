@@ -27,7 +27,7 @@ $items = $stmt->fetchAll();
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <title>Sepetim</title>
+  <title>My Cart</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <style>
@@ -142,25 +142,25 @@ $items = $stmt->fetchAll();
   <?php endif; ?>
 
   <div class="container">
-    <h1>Sepetim</h1>
+    <h1>My Cart</h1>
 
     <div class="actions">
-      <a href="index.php">Ürünlere Devam Et</a>
-      <button class="purchase">Satın Al</button>
+      <a href="index.php">Return to Products</a>
+      <button class="purchase">Buy</button>
     </div>
 
     <?php if (empty($items)): ?>
-      <p>Sepetiniz boş.</p>
+      <p>Your cart is empty.</p>
     <?php else: ?>
       <table>
         <thead>
           <tr>
-            <th>Resim</th>
-            <th>Ürün</th>
-            <th>Fiyat</th>
-            <th>Adet</th>
-            <th>Toplam</th>
-            <th>Sil</th>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Count</th>
+            <th>Total</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody id="cart-body">
@@ -180,7 +180,7 @@ $items = $stmt->fetchAll();
         </tbody>
       </table>
 
-      <div class="total">Genel Toplam: <span id="grand-total">0₺</span></div>
+      <div class="total">Grand Total: <span id="grand-total">0₺</span></div>
     <?php endif; ?>
   </div>
 
@@ -229,7 +229,7 @@ $items = $stmt->fetchAll();
     });
 
     document.querySelector('.purchase').addEventListener('click', () => {
-      if (!confirm('Satın alma işlemini onaylıyor musunuz?')) return;
+      if (!confirm('Do you confirm the purchase?')) return;
       fetch('purchaseCart.php', {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
