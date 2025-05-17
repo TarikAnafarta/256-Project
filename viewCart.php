@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <?php
 // viewCart.php
 session_start();
@@ -27,7 +29,7 @@ $items = $stmt->fetchAll();
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <title>My Cart</title>
+  <title>Sepetim</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <style>
@@ -49,7 +51,10 @@ $items = $stmt->fetchAll();
     /* Page CSS */
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
+       background-image: url("img/Supermarkt.jpg");
+      background-size: cover;          /* Resmi tamamen kapla */
+      background-repeat: no-repeat;    /* Tekrarlamasın */
+      background-position: center;     /* Ortala */
       margin: 0;
       padding: 20px;
     }
@@ -142,25 +147,25 @@ $items = $stmt->fetchAll();
   <?php endif; ?>
 
   <div class="container">
-    <h1>My Cart</h1>
+    <h1>Sepetim<i style="font-size:36px" class="fa">&#xf291;</i></h1>
 
     <div class="actions">
-      <a href="index.php">Return to Products</a>
-      <button class="purchase">Buy</button>
+      <a href="index.php">Ürünlere Devam Et</a>
+      <button class="purchase">Satın Al</button>
     </div>
 
     <?php if (empty($items)): ?>
-      <p>Your cart is empty.</p>
+      <p>Sepetiniz boş.</p>
     <?php else: ?>
       <table>
         <thead>
           <tr>
-            <th>Image</th>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Count</th>
-            <th>Total</th>
-            <th>Delete</th>
+            <th>Resim</th>
+            <th>Ürün</th>
+            <th>Fiyat</th>
+            <th>Adet</th>
+            <th>Toplam</th>
+            <th>Sil</th>
           </tr>
         </thead>
         <tbody id="cart-body">
@@ -180,7 +185,7 @@ $items = $stmt->fetchAll();
         </tbody>
       </table>
 
-      <div class="total">Grand Total: <span id="grand-total">0₺</span></div>
+      <div class="total">Genel Toplam: <span id="grand-total">0₺</span></div>
     <?php endif; ?>
   </div>
 
@@ -229,7 +234,7 @@ $items = $stmt->fetchAll();
     });
 
     document.querySelector('.purchase').addEventListener('click', () => {
-      if (!confirm('Do you confirm the purchase?')) return;
+      if (!confirm('Satın alma işlemini onaylıyor musunuz?')) return;
       fetch('purchaseCart.php', {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
