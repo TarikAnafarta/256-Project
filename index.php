@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <?php
 // index.php
 session_start();
@@ -61,7 +63,7 @@ if ($_SESSION['user_type'] === 'consumer') {
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <title>Main Page</title>
+  <title>Ana Sayfa</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <style>
@@ -76,55 +78,94 @@ if ($_SESSION['user_type'] === 'consumer') {
 
     /* Page CSS */
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0; padding: 20px;
-    }
+  font-family: Arial, sans-serif;
+   background: #a3d5ff; /* Açık buz mavisi */
+  margin: 0; padding: 20px;
+}
     .wrapper {
       max-width: 1100px;
       margin: 0 auto;
     }
+
+    /* Header: Market Name + Nav Buttons */
+    .header {
+       border: 1.5px solid black;
+      background-color: #fff;
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .market-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
     .nav {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 20px;
     }
+
     .nav a {
       padding: 8px 16px;
       background: #007bff;
       color: #fff;
       text-decoration: none;
       border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .nav a.logout { background: #dc3545; }
-    .nav a.cart   { background: #28a745; }
-    .nav a.profile{ background: #ffc107; color:#333; }
+    .nav a.logout { background: #dc3545;border: 1.5px solid black; }
+    .nav a.cart   { background: #28a745; border: 1.5px solid black;}
+    .nav a.profile{ background: #ffc107; color:#333;border: 1.5px solid black; }
 
+    /* Search bar below header */
     .search {
-      margin-bottom: 20px;
+       
+      margin: 0 auto 30px auto;
+      text-align: center;
     }
     .search input {
-      padding: 8px;
-      width: 80%;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1.5px solid black; /* Kalın siyah border */
+  border-radius: 6px;      /* İstersen köşeleri yuvarla */
+  padding: 8px;
+  width: 60%;
+  max-width: 500px;
+  box-sizing: border-box;
     }
     .search button {
+      border: 1.5px solid black;
       padding: 8px 12px;
       border: none;
       background: #007bff;
       color: #fff;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 1rem;
     }
 
+    /* Products grid */
     .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
-      gap: 20px;
+      
+      display: flex;
+      flex-wrap: wrap;
+      gap: 80px;
+      justify-content: center;
     }
+    
     .card {
+      border: 1.5px solid black;
+      width: 220px;
       background: #fff;
       border-radius: 6px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -214,63 +255,65 @@ if ($_SESSION['user_type'] === 'consumer') {
   </script>
   <?php endif; ?>
 
-  <div class="wrapper">
+  <div class="header">
+    <div class="market-name">Market Ürünleri</div>
     <div class="nav">
-      <a href="logout.php" class="logout">Logout</a>
+      <a href="updateProfile.php" class="profile">&#128100; Profilimi Düzenle</a>
       <?php if ($_SESSION['user_type'] === 'consumer'): ?>
-        <a href="viewCart.php" class="cart">Go to Cart</a>
+        <a href="viewCart.php" class="cart"><i style="font-size:24px" class="fa">&#xf291;</i> Sepete Git</a>
       <?php else: ?>
-        <a href="market_products.php">Market Management</a>
+        <a href="market_products.php">Market Yönetimi</a>
       <?php endif; ?>
-      <a href="updateProfile.php" class="profile">Edit My Profile</a>
+      <a href="logout.php" class="logout"><i class="fa fa-sign-out" style="font-size:24px"></i> Çıkış Yap</a>
     </div>
-
-    <?php if ($_SESSION['user_type'] === 'consumer'): ?>
-      <form class="search" method="get">
-        <input name="q" placeholder="Search product…" value="<?= htmlspecialchars($q) ?>">
-        <button type="submit">Search</button>
-      </form>
-
-      <?php if (empty($products)): ?>
-        <p>Product not found.</p>
-      <?php else: ?>
-        <div class="grid">
-          <?php foreach ($products as $p): ?>
-            <div class="card">
-              <img src="img/<?= htmlspecialchars($p['image']) ?>" alt="">
-              <div class="card-body">
-                <div class="card-title"><?= htmlspecialchars($p['title']) ?></div>
-                <div class="card-prices">
-                  <span class="old"><?= htmlspecialchars($p['normal_price']) ?>₺</span>
-                  <span class="new"><?= htmlspecialchars($p['discounted_price']) ?>₺</span>
-                </div>
-                <form method="POST" action="addToCart.php" class="card-action">
-                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
-                  <input type="hidden" name="product_id" value="<?= (int)$p['product_id'] ?>">
-                  <button>Sepete Ekle</button>
-                </form>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-
-        <?php if ($pages > 1): ?>
-          <ul class="pagination">
-            <?php for ($i = 1; $i <= $pages; $i++): ?>
-              <li>
-                <a href="?q=<?= urlencode($q) ?>&page=<?= $i ?>"
-                   class="<?= $i === $page ? 'current' : '' ?>">
-                  <?= $i ?>
-                </a>
-              </li>
-            <?php endfor; ?>
-          </ul>
-        <?php endif; ?>
-      <?php endif; ?>
-
-    <?php else: ?>
-      <p>Welcome, market manager! Click the button above to manage your products.</p>
-    <?php endif; ?>
   </div>
+
+  <?php if ($_SESSION['user_type'] === 'consumer'): ?>
+    <form class="search" method="get">
+      <input name="q" placeholder="Ürün ara…" value="<?= htmlspecialchars($q) ?>">
+      <button type="submit">Ara</button>
+    </form>
+
+    <?php if (empty($products)): ?>
+      <p>Ürün bulunamadı.</p>
+    <?php else: ?>
+      <div class="grid">
+        <?php foreach ($products as $p): ?>
+          <div class="card">
+            <img src="img/<?= htmlspecialchars($p['image']) ?>" alt="">
+            <div class="card-body">
+              <div class="card-title"><?= htmlspecialchars($p['title']) ?></div>
+              <div class="card-prices">
+                <span class="old"><?= htmlspecialchars($p['normal_price']) ?>₺</span>
+                <span class="new"><?= htmlspecialchars($p['discounted_price']) ?>₺</span>
+              </div>
+              <form method="POST" action="addToCart.php" class="card-action">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                <input type="hidden" name="product_id" value="<?= (int)$p['product_id'] ?>">
+                <button>Sepete Ekle</button>
+              </form>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <?php if ($pages > 1): ?>
+        <ul class="pagination">
+          <?php for ($i = 1; $i <= $pages; $i++): ?>
+            <li>
+              <a href="?q=<?= urlencode($q) ?>&page=<?= $i ?>"
+                 class="<?= $i === $page ? 'current' : '' ?>">
+                <?= $i ?>
+              </a>
+            </li>
+          <?php endfor; ?>
+        </ul>
+      <?php endif; ?>
+    <?php endif; ?>
+
+  <?php else: ?>
+    <p>Hoş geldiniz, market yetkilisi! Ürünlerinizi yönetmek için üstteki düğmeye tıklayın.</p>
+  <?php endif; ?>
+
 </body>
 </html>
