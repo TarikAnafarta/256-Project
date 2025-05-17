@@ -35,7 +35,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <title>Market Yönetimi</title>
+  <title>Market Management</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <style>
@@ -87,28 +87,28 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php endif; ?>
 
   <div class="container">
-    <h1>Benim Ürünlerim</h1>
+    <h1>My Products</h1>
 
     <div class="actions">
-      <a href="add_product.php">Yeni Ürün Ekle</a>
-      <a href="index.php" style="background:#6c757d;">Ana Sayfa</a>
+      <a href="add_product.php">Add New Product</a>
+      <a href="index.php" style="background:#6c757d;">Main Page</a>
     </div>
 
     <table>
       <thead>
         <tr>
           <th>#</th>
-          <th>Başlık</th>
-          <th>Stok</th>
-          <th>Fiyat</th>
-          <th>İndirim</th>
-          <th>Son Kullanma</th>
-          <th>İşlemler</th>
+          <th>Title</th>
+          <th>Stock</th>
+          <th>Price</th>
+          <th>Discount</th>
+          <th>Expiration Date</th>
+          <th>Transactions</th>
         </tr>
       </thead>
       <tbody>
         <?php if (empty($products)): ?>
-          <tr><td colspan="7" class="text-center">Henüz ürün eklenmemiş.</td></tr>
+          <tr><td colspan="7" class="text-center">No products added yet.</td></tr>
         <?php else: foreach ($products as $p): ?>
           <tr class="<?= $p['is_expired'] ? 'table-danger' : '' ?>">
             <td><?= htmlspecialchars($p['product_id']) ?></td>
@@ -118,11 +118,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <td><?= htmlspecialchars($p['discounted_price']) ?>₺</td>
             <td><?= htmlspecialchars($p['expiration_date']) ?></td>
             <td>
-              <a href="edit_product.php?id=<?= $p['product_id'] ?>" class="btn-sm btn-primary">Düzenle</a>
+              <a href="edit_product.php?id=<?= $p['product_id'] ?>" class="btn-sm btn-primary">Edit</a>
               <a href="delete_product.php?id=<?= $p['product_id'] ?>&csrf_token=<?= htmlspecialchars(csrf_token()) ?>"
                  class="btn-sm btn-danger"
-                 onclick="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">
-                Sil
+                 onclick="return confirm('Are you sure you want to delete this product?')">
+                Delete
               </a>
             </td>
           </tr>

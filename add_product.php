@@ -30,15 +30,15 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $exp_date         = $_POST['expiration_date'] ?? '';
     $img              = $_FILES['image'] ?? null;
 
-    if ($title==='')          $errors[] = 'Başlık boş olamaz.';
-    if ($stock < 1)           $errors[] = 'Stok en az 1 olmalı.';
-    if ($normal_price <= 0)   $errors[] = 'Normal fiyat sıfırdan büyük olmalı.';
+    if ($title==='')          $errors[] = 'Title cannot be empty.';
+    if ($stock < 1)           $errors[] = 'Stock must be at least 1.';
+    if ($normal_price <= 0)   $errors[] = 'Normal price must be greater than zero.';
     if ($discounted_price <= 0 || $discounted_price > $normal_price) {
-        $errors[] = 'İndirimli fiyat, normal fiyatı geçmemeli ve sıfırdan büyük olmalı.';
+        $errors[] = 'Discounted price must not exceed the normal price and must be greater than zero.';
     }
-    if (!$exp_date)           $errors[] = 'Son kullanma tarihi gerekli.';
+    if (!$exp_date)           $errors[] = 'Expiration date required.';
     if (!$img || $img['error']!==UPLOAD_ERR_OK) {
-        $errors[] = 'Bir resim yükleyin.';
+        $errors[] = 'Upload an image.';
     }
 
     if (empty($errors)) {
@@ -64,7 +64,7 @@ SQL
             $filename
         ]);
 
-        $_SESSION['flash'] = ['msg'=>'Ürün eklendi.','error'=>false];
+        $_SESSION['flash'] = ['msg'=>'Product added.','error'=>false];
         header('Location: market_products.php');
         exit;
     }
@@ -73,7 +73,7 @@ SQL
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8"><title>Yeni Ürün Ekle</title>
+  <meta charset="utf-8"><title>Add New Product</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:20px;}
@@ -100,7 +100,7 @@ SQL
   <?php endif; ?>
 
   <div class="container">
-    <h2>Yeni Ürün Ekle</h2>
+    <h2>Add New Product</h2>
     <?php if($errors): ?>
       <div class="error"><?php foreach($errors as $e) echo htmlspecialchars($e).'<br>' ?></div>
     <?php endif; ?>
@@ -108,29 +108,29 @@ SQL
     <form method="POST" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
-      <label>Başlık</label>
+      <label>Title</label>
       <input name="title" type="text" value="<?= htmlspecialchars($_POST['title'] ?? '') ?>" required>
 
-      <label>Stok</label>
+      <label>Stock</label>
       <input name="stock" type="number" min="1" value="<?= htmlspecialchars($_POST['stock'] ?? '') ?>" required>
 
-      <label>Normal Fiyat (₺)</label>
+      <label>Normal Price (₺)</label>
       <input name="normal_price" type="number" step="0.01" value="<?= htmlspecialchars($_POST['normal_price'] ?? '') ?>" required>
 
-      <label>İndirimli Fiyat (₺)</label>
+      <label>Discounted Price (₺)</label>
       <input name="discounted_price" type="number" step="0.01" value="<?= htmlspecialchars($_POST['discounted_price'] ?? '') ?>" required>
 
-      <label>Son Kullanma Tarihi</label>
+      <label>Expiration Date</label>
       <input name="expiration_date" type="date" value="<?= htmlspecialchars($_POST['expiration_date'] ?? '') ?>" required>
 
-      <label>Resim</label>
+      <label>Image</label>
       <input name="image" type="file" accept="image/*" required>
 
-      <button type="submit">Kaydet</button>
+      <button type="submit">Submit</button>
     </form>
 
     <p style="text-align:center;margin-top:10px;">
-      <a href="market_products.php">← Ürün Listesine Dön</a>
+      <a href="market_products.php">← Return to Product List</a>
     </p>
   </div>
 </body>

@@ -18,7 +18,7 @@ $stmt->execute([$uid]);
 $user = $stmt->fetch();
 
 if (!$user) {
-    die("Kullanıcı bulunamadı.");
+    die("User not found.");
 }
 
 $errors = [];
@@ -36,13 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validation
     if ($full_name === '') {
-        $errors[] = 'Ad Soyad boş bırakılamaz.';
+        $errors[] = 'Name Surname cannot be left blank.';
     }
     if ($city === '') {
-        $errors[] = 'Lütfen şehir seçin veya girin.';
+        $errors[] = 'Please select or enter a city.';
     }
     if ($district === '') {
-        $errors[] = 'İlçe boş bırakılamaz.';
+        $errors[] = 'District cannot be left blank..';
     }
 
     if (!$errors) {
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $upd2->execute([$full_name, $uid]);
         }
 
-        $success = 'Profiliniz güncellendi.';
+        $success = 'Your profile has been updated.';
         // Refresh current values
         $user['full_name'] = $full_name;
         $user['city']      = $city;
@@ -78,7 +78,7 @@ $cities = ['İstanbul','Ankara','İzmir','Bursa','Antalya'];
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Profilimi Düzenle</title>
+  <title>Edit My Profile</title>
   <style>
     body { font-family: Arial,sans-serif; background:#f4f4f4; margin:0; padding:0; }
     .container {
@@ -108,7 +108,7 @@ $cities = ['İstanbul','Ankara','İzmir','Bursa','Antalya'];
 <body>
  <div id="toast"></div>
 <div class="container">
-  <h2>Profilimi Düzenle</h2>
+  <h2>Edit My Profile</h2>
 
   <?php if ($success): ?>
     <div class="message"><?= htmlspecialchars($success) ?></div>
@@ -125,16 +125,16 @@ $cities = ['İstanbul','Ankara','İzmir','Bursa','Antalya'];
   <form method="POST">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
-    <label>Email (değiştirilemez)</label>
+    <label>Email (cannot be changed)</label>
     <input type="email" value="<?= htmlspecialchars($user['email']) ?>" disabled>
 
-    <label for="full_name">Ad Soyad</label>
+    <label for="full_name">Name Surname</label>
     <input id="full_name" name="full_name" type="text"
            value="<?= htmlspecialchars($user['full_name']) ?>" required>
 
-    <label for="city">Şehir</label>
+    <label for="city">City</label>
     <select id="city" name="city" required>
-      <option value="">Seçiniz…</option>
+      <option value="">Select…</option>
       <?php foreach ($cities as $c): ?>
         <option value="<?= $c ?>"
           <?= $user['city'] === $c ? 'selected' : '' ?>>
@@ -142,28 +142,28 @@ $cities = ['İstanbul','Ankara','İzmir','Bursa','Antalya'];
         </option>
       <?php endforeach; ?>
       <option value="other" <?= !in_array($user['city'], $cities) ? 'selected' : '' ?>>
-        Diğer
+        Other
       </option>
     </select>
 
     <div id="city_other_field">
-      <label for="city_other">Diğer Şehir</label>
+      <label for="city_other">Other City</label>
       <input id="city_other" name="city_other" type="text"
              value="<?= !in_array($user['city'], $cities) ? htmlspecialchars($user['city']) : '' ?>">
     </div>
 
-    <label for="district">İlçe</label>
+    <label for="district">District</label>
     <input id="district" name="district" type="text"
            value="<?= htmlspecialchars($user['district']) ?>" required>
 
-    <button type="submit" class="btn">Güncelle</button>
+    <button type="submit" class="btn">Update</button>
         <!-- after your Güncelle button, before closing </form> or </div> -->
     </form>
 
     <!-- BACK BUTTON -->
     <p style="text-align:center; margin-top:15px;">
       <a href="index.php" class="btn" style="background:#6c757d;">
-        ← Ana Sayfa
+        ← Main Page
       </a>
     </p>
   </div>

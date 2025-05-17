@@ -1,7 +1,7 @@
 <?php
 // product_delete.php
 
-require_once 'config/db.php';
+require_once '/db.php';
 require_once 'includes/functions.php';
 requireLogin();
 

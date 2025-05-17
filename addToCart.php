@@ -32,7 +32,7 @@ $stmt->execute([$userId, $productId]);
 
 // Flash success message
 $_SESSION['flash'] = [
-    'msg'   => 'Ürün sepete eklendi!',
+    'msg'   => 'Product added to cart!',
     'error' => false
 ];
 

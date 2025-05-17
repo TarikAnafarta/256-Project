@@ -14,7 +14,7 @@ validate_csrf();
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
-    echo "Önce giriş yapmalısınız.";
+    echo "You must log in first.";
     exit;
 }
 
@@ -38,13 +38,13 @@ try {
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($items)) {
-        throw new Exception("Sepetiniz boş.");
+        throw new Exception("Your cart is empty.");
     }
 
     // 3) Validate stock
     foreach ($items as $it) {
         if ($it['want'] > $it['stock']) {
-            throw new Exception("Yetersiz stok: {$it['title']} için sadece {$it['stock']} kalan var.");
+            throw new Exception("Insufficient stock: Only {$it['stock']} left for {$it['title']}.");
         }
     }
 
@@ -69,7 +69,7 @@ try {
     $pdo->commit();
 
     // 7) Respond
-    echo "Satın alma başarılı!";
+    echo "Purchase successful!";
 
 } catch (Exception $e) {
     // Roll back on any error

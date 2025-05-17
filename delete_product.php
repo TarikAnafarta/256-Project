@@ -37,7 +37,7 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute([$productId, $_SESSION['user_id']]);
 if (!$stmt->fetchColumn()) {
-    die('Ürün bulunamadı veya yetkiniz yok.');
+    die('Product not found or you are not authorized.');
 }
 
 // 6) Perform deletion
@@ -46,7 +46,7 @@ $del->execute([$productId]);
 
 // 7) Flash success and redirect back to CRUD page
 $_SESSION['flash'] = [
-    'msg'   => 'Ürün silindi.',
+    'msg'   => 'Product deleted.',
     'error' => false
 ];
 

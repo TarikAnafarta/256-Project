@@ -15,7 +15,7 @@ $stmt = $pdo->prepare("SELECT p.*, m.user_id FROM products p JOIN markets m ON p
 $stmt->execute([$id]);
 $row = $stmt->fetch();
 if (!$row || $row['user_id'] != $_SESSION['user_id']) {
-    die('Ürün bulunamadı veya yetkiniz yok.');
+    die('Product not found or you are not authorized.');
 }
 
 $errors = [];
@@ -30,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $exp_date         = $_POST['expiration_date'];
     $img              = $_FILES['image'] ?? null;
 
-    if ($title==='')          $errors[]='Başlık boş olamaz.';
-    if ($stock<1)             $errors[]='Stok en az 1 olmalı.';
-    if ($normal_price<=0)     $errors[]='Normal fiyat sıfırdan büyük olmalı.';
+    if ($title==='')          $errors[]='Title cannot be empty.';
+    if ($stock<1)             $errors[]='Stock must be at least 1.';
+    if ($normal_price<=0)     $errors[]='Normal price must be greater than zero.';
     if ($discounted_price<=0 || $discounted_price>$normal_price) {
-        $errors[]='İndirimli fiyat hatalı.';
+        $errors[]='Discounted price is wrong.';
     }
-    if (!$exp_date)           $errors[]='SKT gerekli.';
+    if (!$exp_date)           $errors[]='Expiration date is required.';
 
     // if new image uploaded
     if ($img && $img['error']===UPLOAD_ERR_OK) {
@@ -59,7 +59,7 @@ SQL
             $discounted_price, $exp_date,
             $filename, $id
         ]);
-        $_SESSION['flash']=['msg'=>'Ürün güncellendi.','error'=>false];
+        $_SESSION['flash']=['msg'=>'Product updated.','error'=>false];
         header('Location: market_products.php');
         exit;
     }
@@ -69,7 +69,7 @@ SQL
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8"><title>Ürün Düzenle</title>
+  <meta charset="utf-8"><title>Edit Product</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     /* same styles as add_product */
@@ -96,7 +96,7 @@ SQL
   <?php endif; ?>
 
   <div class="container">
-    <h2>Ürün Düzenle</h2>
+    <h2>Edit Product</h2>
     <?php if($errors): ?>
       <div class="error"><?php foreach($errors as $e) echo htmlspecialchars($e).'<br>' ?></div>
     <?php endif; ?>
@@ -104,29 +104,29 @@ SQL
     <form method="POST" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 
-      <label>Başlık</label>
+      <label>Title</label>
       <input name="title" type="text" value="<?= htmlspecialchars($row['title']) ?>" required>
 
-      <label>Stok</label>
+      <label>Stock</label>
       <input name="stock" type="number" min="1" value="<?= htmlspecialchars($row['stock']) ?>" required>
 
-      <label>Normal Fiyat (₺)</label>
+      <label>Normal Price (₺)</label>
       <input name="normal_price" type="number" step="0.01" value="<?= htmlspecialchars($row['normal_price']) ?>" required>
 
-      <label>İndirimli Fiyat (₺)</label>
+      <label>Discounted Price (₺)</label>
       <input name="discounted_price" type="number" step="0.01" value="<?= htmlspecialchars($row['discounted_price']) ?>" required>
 
-      <label>Son Kullanma Tarihi</label>
+      <label>Expiration Date</label>
       <input name="expiration_date" type="date" value="<?= htmlspecialchars($row['expiration_date']) ?>" required>
 
-      <label>Resim (yenilemek için seçin)</label>
+      <label>Image (select to update)</label>
       <input name="image" type="file" accept="image/*">
 
-      <button type="submit">Güncelle</button>
+      <button type="submit">Update</button>
     </form>
 
     <p style="text-align:center;margin-top:10px;">
-      <a href="market_products.php">← Ürün Listesine Dön</a>
+      <a href="market_products.php">← Return to Product List</a>
     </p>
   </div>
 </body>
