@@ -92,11 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $mail->isSMTP();
           $mail->Host       = 'asmtp.bilkent.edu.tr';                     
           $mail->SMTPAuth   = true;                                   
-          $mail->Username   =  'turkan.gazel@ug.bilkent.edu.tr';                                       
-          $mail->Password   =  'stg20242024' ;                     
+          $mail->Username   =  'Your Username';                                       
+          $mail->Password   =  'Your Password' ;                     
           $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
           $mail->Port       = 587;  
-          $mail->setFrom("turkan.gazel@ug.bilkent.edu.tr", "Market System");
+          $mail->setFrom("YOUR MAIL", "Market System");
           $mail->addAddress($email, $full_name);  
           $mail->isHTML(true);
           $mail->Subject = 'Verification Code';
