@@ -86,18 +86,18 @@ INSERT INTO `products` (`market_id`,`title`,`stock`,`normal_price`,`discounted_p
 
 -- Seed products for Market 2, all using nutella.jpg
 INSERT INTO `products` (`market_id`,`title`,`stock`,`normal_price`,`discounted_price`,`expiration_date`,`image`) VALUES
-(2,'Coca-Cola 2L',60,25.00,18.00,'2025-05-20','nutella.jpg'),
-(2,'Fanta 1.5L',50,20.00,14.00,'2025-05-22','nutella.jpg'),
-(2,'Pepsi 1L',55,18.00,12.50,'2025-05-19','nutella.jpg'),
-(2,'Kivi (kg)',30,30.00,22.00,'2025-05-27','nutella.jpg'),
-(2,'Şeftali (kg)',40,22.00,16.00,'2025-05-26','nutella.jpg'),
-(2,'Karışık Kuruyemiş (400g)',20,50.00,35.00,'2025-06-15','nutella.jpg'),
-(2,'Bisküvi Çeşitleri (paket)',80,12.00,8.00,'2025-07-01','nutella.jpg'),
-(2,'Çikolatalı Gofret (12lı)',60,24.00,17.00,'2025-06-05','nutella.jpg'),
-(2,'Petek Bal (250g)',25,60.00,45.00,'2026-01-01','nutella.jpg'),
-(2,'Tereyağı (500g)',35,80.00,60.00,'2025-06-10','nutella.jpg'),
-(2,'Margarin (250g)',50,15.00,10.00,'2025-06-08','nutella.jpg'),
-(2,'Zeytinyağı (1L)',30,120.00,90.00,'2026-02-01','nutella.jpg');
+(2,'Coca-Cola 2L',60,25.00,18.00,'2025-05-20','cocacola.jpg'),
+(2,'Fanta 1.5L',50,20.00,14.00,'2025-05-22','fanta.jpg'),
+(2,'Pepsi 1L',55,18.00,12.50,'2025-05-19','pepsi.jpg'),
+(2,'Kivi (kg)',30,30.00,22.00,'2025-05-27','kivi.jpg'),
+(2,'Şeftali (kg)',40,22.00,16.00,'2025-05-26','seftali.jpg'),
+(2,'Karışık Kuruyemiş (400g)',20,50.00,35.00,'2025-06-15','kuruyemis.jpg'),
+(2,'Bisküvi Çeşitleri (paket)',80,12.00,8.00,'2025-07-01','puskevit.jpg'),
+(2,'Çikolatalı Gofret (12lı)',60,24.00,17.00,'2025-06-05','gofret.jpg'),
+(2,'Petek Bal (250g)',25,60.00,45.00,'2026-01-01','petekbal.jpg'),
+(2,'Tereyağı (500g)',35,80.00,60.00,'2025-06-10','tereyagı.jpg'),
+(2,'Margarin (250g)',50,15.00,10.00,'2025-06-08','margarin.jpg'),
+(2,'Zeytinyağı (1L)',30,120.00,90.00,'2026-02-01','zeytinyagı.jpg');
 
 -- 4) Consumer Cart
 CREATE TABLE IF NOT EXISTS `consumer_cart` (
