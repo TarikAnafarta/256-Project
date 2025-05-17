@@ -71,18 +71,18 @@ CREATE TABLE IF NOT EXISTS `products` (
 
 -- Seed products for Market 1, all using milka.jpg
 INSERT INTO `products` (`market_id`,`title`,`stock`,`normal_price`,`discounted_price`,`expiration_date`,`image`) VALUES
-(1,'Süt (1L)',50,10.00,7.50,'2025-05-25','milka.jpg'),
-(1,'Taze Kaşar Peyniri (400g)',20,45.00,32.00,'2025-06-01','milka.jpg'),
-(1,'Yumurta (10lu)',100,25.00,18.00,'2025-05-20','milka.jpg'),
-(1,'Tam Buğday Ekmek',30,8.00,5.00,'2025-05-18','milka.jpg'),
-(1,'Beyaz Peynir (300g)',25,30.00,22.00,'2025-05-30','milka.jpg'),
-(1,'Yoğurt (500g)',40,15.00,11.00,'2025-06-05','milka.jpg'),
-(1,'Tavuk Göğsü (kg)',15,90.00,70.00,'2025-05-28','milka.jpg'),
-(1,'Muz (kg)',60,20.00,14.00,'2025-05-22','milka.jpg'),
-(1,'Elma (kg)',50,18.00,12.00,'2025-05-24','milka.jpg'),
-(1,'Zeytin (200g)',35,20.00,14.00,'2025-06-10','milka.jpg'),
-(1,'Salatalık (kg)',40,12.00,8.00,'2025-05-21','milka.jpg'),
-(1,'Domates (kg)',45,15.00,10.00,'2025-05-23','milka.jpg');
+(1,'Süt (1L)',50,10.00,7.50,'2025-05-25','sut.jpg'),
+(1,'Taze Kaşar Peyniri (400g)',20,45.00,32.00,'2025-06-01','tazekasar.jpg'),
+(1,'Yumurta (10lu)',100,25.00,18.00,'2025-05-20','yumurta.jpg'),
+(1,'Tam Buğday Ekmek',30,8.00,5.00,'2025-05-18','tambugdayekmek.jpg'),
+(1,'Beyaz Peynir (300g)',25,30.00,22.00,'2025-05-30','beyazpeynir.jpg'),
+(1,'Yoğurt (500g)',40,15.00,11.00,'2025-06-05','yogurt.jpg'),
+(1,'Tavuk Göğsü (kg)',15,90.00,70.00,'2025-05-28','tavukgogsu.jpg'),
+(1,'Muz (kg)',60,20.00,14.00,'2025-05-22','muz.jpg'),
+(1,'Elma (kg)',50,18.00,12.00,'2025-05-24','elma.jpg'),
+(1,'Zeytin (200g)',35,20.00,14.00,'2025-06-10','zeytin.jpg'),
+(1,'Salatalık (kg)',40,12.00,8.00,'2025-05-21','salatalik.jpg'),    
+(1,'Domates (kg)',45,15.00,10.00,'2025-05-23','domates.jpg');
 
 -- Seed products for Market 2, all using nutella.jpg
 INSERT INTO `products` (`market_id`,`title`,`stock`,`normal_price`,`discounted_price`,`expiration_date`,`image`) VALUES
