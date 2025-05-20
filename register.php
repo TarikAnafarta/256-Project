@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $code = random_int(100000,999999);
         // auto-verify markets
-        $status = $user_type === 'market' ? 'verified' : 'unverified';
+        $status = 'unverified';
 
         $stmt = $pdo->prepare(<<<SQL
             INSERT INTO users
@@ -82,36 +82,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $stmt2->execute([$newId, $full_name]);
         }
-         if ($user_type === 'consumer') {
-        // send $code via email
       
-       
-
-        try {
+        try {         
           $mail = new PHPMailer(true);
           $mail->isSMTP();
-          $mail->Host       = 'asmtp.bilkent.edu.tr';                     
-          $mail->SMTPAuth   = true;                                   
-          $mail->Username   =  'Your Username';                                       
-          $mail->Password   =  'Your Password' ;                     
+          $mail->Host = 'smtp.gmail.com';
+          $mail->SMTPAuth   = true;          
+          $mail->SMTPSecure = 'tls';                         
+          $mail->Username   =  '256marketsystem@gmail.com';                                       
+          $mail->Password   =  '' ;                     
           $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
           $mail->Port       = 587;  
-          $mail->setFrom("YOUR MAIL", "Market System");
+          $mail->setFrom("256marketsystem@gmail.com", "Market System");
           $mail->addAddress($email, $full_name);  
           $mail->isHTML(true);
           $mail->Subject = 'Verification Code';
-          $mail->Body    = "
-              Hello {$full_name},<br><br>
-              To complete your registration process, please enter the code below:<br>
-              <h2>{$code}</h2>
-              Thank you!";  
+          $mail->Body    = $mail->Body = "
+          <html>
+          <head>
+              <style>
+                  .container {
+                      font-family: Arial, sans-serif;
+                      background-color: #f4f7fc;
+                      padding: 30px;
+                      border-radius: 10px;
+                      max-width: 600px;
+                      margin: auto;
+                      border: 1px solid #ddd;
+                  }
+                  .code-box {
+                      background-color: #ffffff;
+                      padding: 15px 25px;
+                      border: 2px dashed #4CAF50;
+                      font-size: 24px;
+                      font-weight: bold;
+                      color: #4CAF50;
+                      text-align: center;
+                      border-radius: 8px;
+                      margin: 20px 0;
+                  }
+                  .footer {
+                      font-size: 12px;
+                      color: #999999;
+                      margin-top: 30px;
+                      text-align: center;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class='container'>
+                  <h2>Hello, {$full_name}</h2>
+                  <p>Please use the verification code below to complete your registration:</p>
+                  <div class='code-box'>{$code}</div>
+                  <p>This code is valid for <strong>10 minutes</strong>.</p>
+              </div>
+          </body>
+          </html>";
+           
           $mail->send();
         } catch (Exception $e) {
             // if sending fails, you can log $mail->ErrorInfo
         }
-    }
+    
 
-        $success = 'Registration successful!'.($user_type==='consumer' ? ' Verification code has been sent via email.' : '');
+        $success = 'Registration successful! Verification code has been sent via email.';
     }
 }
 ?>
@@ -121,76 +155,152 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Log in</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0; padding: 0;
-    }
-    .container {
-      width: 400px;
-      margin: 50px auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-    .btn {
-      background-color: #28a745;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      width: 100%;
-    }
-    .btn:hover {
-      background-color: #218838;
-    }
-    .message {
-      text-align: center;
-      padding: 10px;
-      color: green;
-      font-weight: bold;
-    }
-    .error {
-      text-align: center;
-      padding: 10px;
-      color: red;
-      font-weight: bold;
-    }
-    #city_other_field {
-      display: none;
-    }
-   
-  #toast { 
-    position: fixed; top: 20px; right: 20px; 
-    background: #28a745; color: white; padding: 10px 20px; 
-    border-radius: 4px; opacity: 0; transition: opacity 0.3s;
-  }
-  #toast.show { opacity: 1; }
+ body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #00b4db, #0083b0);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
 
+.container {
+  width: 420px;
+  background: #ffffff;
+  color: #333;
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: slideIn 0.6s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #007bff;
+}
+
+label {
+  font-weight: 600;
+  margin-top: 12px;
+  display: block;
+  font-size: 0.95rem;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.btn {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.message,
+.error {
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.message {
+  background: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+#city_other_field {
+  display: none;
+}
+
+p {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#toast.show {
+  opacity: 1;
+}
 
   </style>
 </head>
 <body>
  <div id="toast"></div>
 <div class="container">
-  <h2>Log in</h2>
+  <h2>Sign Up</h2>
 
   <?php if ($success): ?>
     <div class="message"><?= htmlspecialchars($success) ?></div>
-    <?php if ($_POST['user_type']!=='market'): ?>
-      <p style="text-align:center;"><a href="verify.php">Go to Verification Page</a></p>
-    <?php endif; ?>
+    <p style="text-align:center;"><a href="verify.php">Go to Verification Page</a></p>
   <?php endif; ?>
 
   <?php if ($errors): ?>

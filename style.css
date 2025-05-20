@@ -30,7 +30,6 @@ input:valid, select:valid {
 .toast-success { background: #28a745; }
 .toast-error   { background: #dc3545; }
 
-/* 3) Responsive grid tweak */
 @media (max-width: 576px) {
   .grid {
     grid-template-columns: 1fr !important;

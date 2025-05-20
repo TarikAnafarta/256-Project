@@ -41,70 +41,132 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Log in</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0; padding: 0;
-    }
-    .container {
-      width: 400px;
-      margin: 80px auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-    .btn {
-      background-color: #28a745;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      width: 100%;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background-color: #218838;
-    }
-    .error {
-      background-color: #f8d7da;
-      color: #842029;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    .text-center {
-      text-align: center;
-      margin-top: 15px;
-    }
-    .text-center a {
-      color: #28a745;
-      text-decoration: none;
-    }
-    .text-center a:hover {
-      text-decoration: underline;
-    }
-    #toast { 
-      position: fixed; top: 20px; right: 20px; 
-      background: #28a745; color: white; padding: 10px 20px; 
-      border-radius: 4px; opacity: 0; transition: opacity 0.3s;
-    }
-    #toast.show { opacity: 1; }
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('img/login-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(3px);
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 40px;
+  width: 350px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  backdrop-filter: blur(12px);
+  color: black;
+  animation: fadeIn 0.7s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px); }
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+label {
+  font-size: 0.9rem;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  color: black;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: rgba(255,255,255,0.15);
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  background-color: rgba(255,255,255,0.25);
+}
+
+::placeholder {
+  color: #ddd;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(to right, #43e97b, #38f9d7);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.error {
+  background-color: rgba(255, 0, 0, 0.25);
+  color: red;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.text-center {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.text-center a {
+  color: #00eaff;
+  text-decoration: none;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}
+
+#toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #00c851;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#toast.show {
+  opacity: 1;
+}
+
   </style>
 </head>
 <body>

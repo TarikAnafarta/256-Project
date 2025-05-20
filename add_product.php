@@ -69,38 +69,141 @@ SQL
         exit;
     }
 }
-?>
-<!doctype html>
-<html lang="tr">
+?><!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8"><title>Add New Product</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:20px;}
-    .container{max-width:500px;margin:0 auto;background:#fff;padding:20px;border-radius:8px;}
-    label{display:block;margin-top:10px;}
-    input,button{width:100%;padding:10px;margin-top:5px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
-    button{background:#28a745;color:#fff;border:none;cursor:pointer;margin-top:15px;}
-    button:hover{background:#218838;}
-    .error{background:#f8d7da;color:#842029;padding:10px;border-radius:4px;}
-    #toast{position:fixed;top:20px;right:20px;background:#28a745;color:#fff;padding:10px 20px;border-radius:4px;opacity:0;transition:opacity .3s;}
-    #toast.show{opacity:1;}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fce4ec);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 550px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+      font-size: 1.8rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input,
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    }
+
+    button {
+      background: linear-gradient(to right, #28a745, #3ddc84);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #218838;
+      transform: scale(1.03);
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #842029;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 5px solid #dc3545;
+    }
+
+    #toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      font-weight: bold;
+      font-size: 15px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    #toast.show {
+      opacity: 1;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    p a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    p a:hover {
+      color: #0056b3;
+    }
   </style>
 </head>
 <body>
 
   <div id="toast"></div>
   <?php if (!empty($_SESSION['flash'])):
-    $f = $_SESSION['flash']; unset($_SESSION['flash']);
+    $f = $_SESSION['flash'];
+    unset($_SESSION['flash']);
   ?>
   <script>
-    function showToast(msg,isErr){const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#dc3545':'#28a745';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-    showToast(<?= json_encode($f['msg']) ?>,<?= $f['error']?'true':'false'?>);
+    function showToast(msg, isErr) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.background = isErr ? '#dc3545' : '#28a745';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+    showToast(<?= json_encode($f['msg']) ?>, <?= $f['error'] ? 'true' : 'false' ?>);
   </script>
   <?php endif; ?>
 
   <div class="container">
-    <h2>Add New Product</h2>
+    <h2>Add new product</h2>
     <?php if($errors): ?>
       <div class="error"><?php foreach($errors as $e) echo htmlspecialchars($e).'<br>' ?></div>
     <?php endif; ?>
@@ -130,7 +233,7 @@ SQL
     </form>
 
     <p style="text-align:center;margin-top:10px;">
-      <a href="market_products.php">← Return to Product List</a>
+      <a href="market_products.php">← Return to Products</a>
     </p>
   </div>
 </body>

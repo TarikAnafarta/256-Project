@@ -147,25 +147,25 @@ $items = $stmt->fetchAll();
   <?php endif; ?>
 
   <div class="container">
-    <h1>Sepetim<i style="font-size:36px" class="fa">&#xf291;</i></h1>
+    <h1>My Cart<i style="font-size:36px" class="fa">&#xf291;</i></h1>
 
     <div class="actions">
-      <a href="index.php">Ürünlere Devam Et</a>
-      <button class="purchase">Satın Al</button>
+      <a href="index.php">Return to Products</a>
+      <button class="purchase">Buy</button>
     </div>
 
     <?php if (empty($items)): ?>
-      <p>Sepetiniz boş.</p>
+      <p>Cart is empty.</p>
     <?php else: ?>
       <table>
         <thead>
           <tr>
-            <th>Resim</th>
-            <th>Ürün</th>
-            <th>Fiyat</th>
-            <th>Adet</th>
-            <th>Toplam</th>
-            <th>Sil</th>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Count</th>
+            <th>Total</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody id="cart-body">
@@ -185,7 +185,7 @@ $items = $stmt->fetchAll();
         </tbody>
       </table>
 
-      <div class="total">Genel Toplam: <span id="grand-total">0₺</span></div>
+      <div class="total">Grand Total: <span id="grand-total">0₺</span></div>
     <?php endif; ?>
   </div>
 
@@ -234,7 +234,7 @@ $items = $stmt->fetchAll();
     });
 
     document.querySelector('.purchase').addEventListener('click', () => {
-      if (!confirm('Satın alma işlemini onaylıyor musunuz?')) return;
+      if (!confirm('Do you confirm purchase?')) return;
       fetch('purchaseCart.php', {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},

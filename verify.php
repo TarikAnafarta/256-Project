@@ -51,21 +51,118 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Email Verification</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; }
-    .container {
-      width: 400px; margin: 50px auto; background: #fff; padding: 20px;
-      border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input, button {
-      width: 100%; padding: 10px; margin: 10px 0;
-      border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;
-    }
-    button {
-      background: #28a745; color: #fff; border: none; cursor: pointer;
-    }
-    button:hover { background: #218838; }
-    .error { color: #842029; background: #f8d7da; padding: 10px; border-radius: 5px; }
-    .success { color: #0f5132; background: #d1e7dd; padding: 10px; border-radius: 5px; }
+    body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #11998e, #38ef7d);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 420px;
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: fadeSlideIn 0.6s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #11998e;
+}
+
+label {
+  font-weight: 600;
+  margin-top: 12px;
+  display: block;
+  font-size: 0.95rem;
+}
+
+input[type="email"],
+input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #38ef7d;
+}
+
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #00b09b, #96c93d);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.success,
+.error {
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.success {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.error {
+  background: #f8d7da;
+  color: #842029;
+}
+
+p {
+  text-align: center;
+  margin-top: 16px;
+}
+
+a {
+  color: #11998e;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
   </style>
 </head>
 <body>

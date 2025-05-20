@@ -37,9 +37,9 @@ if ($_SESSION['user_type'] === 'consumer') {
 
     // Count total
     $countSql = "SELECT COUNT(*) FROM products p
-                 JOIN markets m ON p.market_id = m.market_id
-                 JOIN users u   ON m.user_id    = u.user_id
-                 WHERE {$where}";
+             LEFT JOIN markets m ON p.market_id = m.market_id
+             LEFT JOIN users u   ON m.user_id = u.user_id
+             WHERE {$where}";
     $cstm = $pdo->prepare($countSql);
     $cstm->execute($params);
     $total = $cstm->fetchColumn();
@@ -47,12 +47,13 @@ if ($_SESSION['user_type'] === 'consumer') {
 
     // Fetch page
     $sql = "SELECT p.*
-            FROM products p
-            JOIN markets m ON p.market_id = m.market_id
-            JOIN users u   ON m.user_id    = u.user_id
-            WHERE {$where}
-            ORDER BY (u.district = ?) DESC, p.expiration_date ASC
-            LIMIT {$per} OFFSET {$offset}";
+        FROM products p
+        LEFT JOIN markets m ON p.market_id = m.market_id
+        LEFT JOIN users u   ON m.user_id    = u.user_id
+        WHERE {$where}
+        ORDER BY (u.district = ? OR u.district IS NULL) DESC, p.expiration_date ASC
+        LIMIT {$per} OFFSET {$offset}";
+
     $params[] = $district;
     $stm = $pdo->prepare($sql);
     $stm->execute($params);
@@ -63,11 +64,10 @@ if ($_SESSION['user_type'] === 'consumer') {
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <title>Ana Sayfa</title>
+  <title>Main Page</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <style>
-    /* Toast CSS */
     #toast {
       position: fixed; top:20px; right:20px;
       background:#28a745; color:#fff;
@@ -76,18 +76,15 @@ if ($_SESSION['user_type'] === 'consumer') {
     }
     #toast.show { opacity:1; }
 
-    /* Page CSS */
     body {
-  font-family: Arial, sans-serif;
-   background: #a3d5ff; /* Açık buz mavisi */
-  margin: 0; padding: 20px;
-}
+      font-family: Arial, sans-serif;
+      background: #a3d5ff;
+      margin: 0; padding: 20px;
+    }
     .wrapper {
-      max-width: 1100px;
+      max-width: max-content;
       margin: 0 auto;
     }
-
-    /* Header: Market Name + Nav Buttons */
     .header {
        border: 1.5px solid black;
       background-color: #fff;
@@ -113,6 +110,7 @@ if ($_SESSION['user_type'] === 'consumer') {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
     .nav a {
@@ -129,16 +127,15 @@ if ($_SESSION['user_type'] === 'consumer') {
     .nav a.cart   { background: #28a745; border: 1.5px solid black;}
     .nav a.profile{ background: #ffc107; color:#333;border: 1.5px solid black; }
 
-    /* Search bar below header */
     .search {
        
       margin: 0 auto 30px auto;
       text-align: center;
     }
     .search input {
-      border: 1.5px solid black; /* Kalın siyah border */
-  border-radius: 6px;      /* İstersen köşeleri yuvarla */
-  padding: 8px;
+      border: 1.5px solid black;
+  border-radius: 6px;     
+      padding: 8px;
   width: 60%;
   max-width: 500px;
   box-sizing: border-box;
@@ -154,7 +151,6 @@ if ($_SESSION['user_type'] === 'consumer') {
       font-size: 1rem;
     }
 
-    /* Products grid */
     .grid {
       
       display: flex;
@@ -229,12 +225,87 @@ if ($_SESSION['user_type'] === 'consumer') {
       color: #fff;
       border-color: #007bff;
     }
-    @media (max-width: 576px) {
-      .grid {
-        grid-template-columns: 1fr !important;
-      }
-    }
-  </style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #f0f2f5, #e2e8f0);
+  color: #333;
+  background-image: url(./img/bg.jpg);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav a {
+  text-decoration: none;
+  padding: 20px 40px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.nav a.logout {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.nav a.logout:hover {
+  background-color: #e63946;
+  transform: scale(1.08);
+}
+
+.nav a.cart {
+  background-color: #48cae4;
+  color: white;
+}
+
+.nav a.cart:hover {
+  background-color: #0096c7;
+  transform: scale(1.08);
+}
+
+.nav a.profile {
+  background-color: #90be6d;
+  color: white;
+}
+
+.nav a.profile:hover {
+  background-color: #588157;
+  transform: scale(1.08);
+}
+
+.nav a:not(.logout):not(.cart):not(.profile) {
+  background-color: #f4a261;
+  color: white;
+}
+
+.nav a:not(.logout):not(.cart):not(.profile):hover {
+  background-color: #e76f51;
+  transform: scale(1.08);
+}
+</style>
 </head>
 <body>
 
@@ -255,65 +326,60 @@ if ($_SESSION['user_type'] === 'consumer') {
   </script>
   <?php endif; ?>
 
-  <div class="header">
-    <div class="market-name">Market Ürünleri</div>
+  <div class="wrapper">
     <div class="nav">
-      <a href="updateProfile.php" class="profile">&#128100; Profilimi Düzenle</a>
+      <a href="logout.php" class="logout">Logout</a>
       <?php if ($_SESSION['user_type'] === 'consumer'): ?>
-        <a href="viewCart.php" class="cart"><i style="font-size:24px" class="fa">&#xf291;</i> Sepete Git</a>
+        <a href="viewCart.php" class="cart">Go to Cart</a>
       <?php else: ?>
-        <a href="market_products.php">Market Yönetimi</a>
+        <a href="market_products.php">Market Management</a>
       <?php endif; ?>
-      <a href="logout.php" class="logout"><i class="fa fa-sign-out" style="font-size:24px"></i> Çıkış Yap</a>
+      <a href="updateProfile.php" class="profile">Edit My Profile</a>
     </div>
-  </div>
 
-  <?php if ($_SESSION['user_type'] === 'consumer'): ?>
-    <form class="search" method="get">
-      <input name="q" placeholder="Ürün ara…" value="<?= htmlspecialchars($q) ?>">
-      <button type="submit">Ara</button>
-    </form>
+    <?php if ($_SESSION['user_type'] === 'consumer'): ?>
+      <form class="search" method="get">
+        <input name="q" placeholder="Search product…" value="<?= htmlspecialchars($q) ?>">
+        <button type="submit">Search</button>
+      </form>
 
-    <?php if (empty($products)): ?>
-      <p>Ürün bulunamadı.</p>
-    <?php else: ?>
-      <div class="grid">
-        <?php foreach ($products as $p): ?>
-          <div class="card">
-            <img src="img/<?= htmlspecialchars($p['image']) ?>" alt="">
-            <div class="card-body">
-              <div class="card-title"><?= htmlspecialchars($p['title']) ?></div>
-              <div class="card-prices">
-                <span class="old"><?= htmlspecialchars($p['normal_price']) ?>₺</span>
-                <span class="new"><?= htmlspecialchars($p['discounted_price']) ?>₺</span>
+      <?php if (empty($products)): ?>
+        <p>Product not found.</p>
+      <?php else: ?>
+        <div class="grid">
+          <?php foreach ($products as $p): ?>
+            <div class="card">
+              <img src="img/<?= htmlspecialchars($p['image']) ?>" alt="">
+              <div class="card-body">
+                <div class="card-title"><?= htmlspecialchars($p['title']) ?></div>
+                <div class="card-prices">
+                  <span class="old"><?= htmlspecialchars($p['normal_price']) ?>₺</span>
+                  <span class="new"><?= htmlspecialchars($p['discounted_price']) ?>₺</span>
+                </div>
+                <form method="POST" action="addToCart.php" class="card-action">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                  <input type="hidden" name="product_id" value="<?= (int)$p['product_id'] ?>">
+                  <button>Add To Cart</button>
+                </form>
               </div>
-              <form method="POST" action="addToCart.php" class="card-action">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
-                <input type="hidden" name="product_id" value="<?= (int)$p['product_id'] ?>">
-                <button>Sepete Ekle</button>
-              </form>
             </div>
-          </div>
-        <?php endforeach; ?>
-      </div>
+          <?php endforeach; ?>
+        </div>
 
-      <?php if ($pages > 1): ?>
-        <ul class="pagination">
-          <?php for ($i = 1; $i <= $pages; $i++): ?>
-            <li>
-              <a href="?q=<?= urlencode($q) ?>&page=<?= $i ?>"
-                 class="<?= $i === $page ? 'current' : '' ?>">
-                <?= $i ?>
-              </a>
-            </li>
-          <?php endfor; ?>
-        </ul>
+        <?php if ($pages > 1): ?>
+          <ul class="pagination">
+            <?php for ($i = 1; $i <= $pages; $i++): ?>
+              <li>
+                <a href="?q=<?= urlencode($q) ?>&page=<?= $i ?>"
+                   class="<?= $i === $page ? 'current' : '' ?>">
+                  <?= $i ?>
+                </a>
+              </li>
+            <?php endfor; ?>
+          </ul>
+        <?php endif; ?>
       <?php endif; ?>
     <?php endif; ?>
-
-  <?php else: ?>
-    <p>Hoş geldiniz, market yetkilisi! Ürünlerinizi yönetmek için üstteki düğmeye tıklayın.</p>
-  <?php endif; ?>
-
+  </div>
 </body>
 </html>

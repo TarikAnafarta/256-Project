@@ -163,7 +163,7 @@ $products = $pdo->query($productsQuery)->fetchAll();
         <div class="product">
             <img src="img/<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['title']) ?>">
             <h2><?= htmlspecialchars($product['title']) ?></h2>
-            <p>Fiyat: <?= $product['discounted_price'] ?>₺</p>
+            <p>Price: <?= $product['discounted_price'] ?>₺</p>
             <form method="POST" action="addToCart.php">
                 <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
                 <button type="submit" class="add-to-cart">Add to Cart</button>

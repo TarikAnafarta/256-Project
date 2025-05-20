@@ -23,7 +23,7 @@ if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type
 // 4) Get product_id from POST
 $productId = (int)($_POST['product_id'] ?? 0);
 if ($productId < 1) {
-    die('Geçersiz ürün ID.');
+    die('Invalid Product ID.');
 }
 
 $pdo = getPDO();
